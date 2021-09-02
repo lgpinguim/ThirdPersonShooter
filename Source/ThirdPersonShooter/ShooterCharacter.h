@@ -32,7 +32,7 @@ private:
 	class USpringArmComponent* CameraBoom;
 	
 public:
-	/** */
+	/**Returns CameraBoom subobject */
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const {return CameraBoom;};
 	
 };
