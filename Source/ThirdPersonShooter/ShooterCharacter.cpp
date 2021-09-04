@@ -7,7 +7,9 @@
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
-AShooterCharacter::AShooterCharacter()
+AShooterCharacter::AShooterCharacter() :
+	BaseTurnRate(45.f),
+	BaseLookUpRate(45.f)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -84,6 +86,18 @@ void AShooterCharacter::MoveRight(float Value)
 	
 }
 
+void AShooterCharacter::TurnAtRate(float Rate)
+{
+	//Calculate Delta for this frame from the rate information
+	AddControllerYawInput(Rate* BaseTurnRate * GetWorld()->GetDeltaSeconds()); // deg/sec *sec/frame
+}
+
+void AShooterCharacter::LookUpAtRate(float Rate)
+{
+	//Calculate Delta for this frame from the rate information
+	AddControllerPitchInput(Rate* BaseLookUpRate * GetWorld()->GetDeltaSeconds()); // deg/sec *sec/frame
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
@@ -99,6 +113,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&AShooterCharacter::MoveFoward);
 	PlayerInputComponent->BindAxis("MoveRight",this,&AShooterCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("TurnRate",this,&AShooterCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate",this,&AShooterCharacter::LookUpAtRate);
+	
 
 }
 
